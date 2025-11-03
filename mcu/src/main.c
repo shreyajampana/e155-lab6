@@ -5,14 +5,16 @@ Email: sjampana@hmc.edu
 Date: 10/18/25
 */
 
+int res;
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "/Users/shreyajampana/e155-lab6/mcu/src/main.h"
-#include "/Users/shreyajampana/e155-lab6/mcu/lib/STM32L432KC_GPIO.h"
-#include "/Users/shreyajampana/e155-lab6/mcu/lib/STM32L432KC_FLASH.h"
-#include "/Users/shreyajampana/e155-lab6/mcu/lib/STM32L432KC_RCC.h"
-#include "/Users/shreyajampana/e155-lab6/mcu/lib/DS1722.h"
+#include "C:\Users\sjampana\Downloads\e155-lab6\e155-lab6\mcu\src\main.h"
+#include "C:\Users\sjampana\Downloads\e155-lab6\e155-lab6\mcu\lib\STM32L432KC_GPIO.h"
+#include "C:\Users\sjampana\Downloads\e155-lab6\e155-lab6\mcu\lib\STM32L432KC_FLASH.h"
+#include "C:\Users\sjampana\Downloads\e155-lab6\e155-lab6\mcu\lib\STM32L432KC_RCC.h"
+#include "C:\Users\sjampana\Downloads\e155-lab6\e155-lab6\mcu\lib\DS1722.h"
 
 /////////////////////////////////////////////////////////////////
 // Provided Constants and Functions
@@ -54,6 +56,22 @@ int updateLEDStatus(char request[])
 	return led_status;
 }
 
+int updatetempStatus(char request[])
+{
+	if (inString(request, "8-bit")==1) {
+      res = 8;
+	} else if (inString(request, "9-bit")==1) {
+		  res = 9;
+	} else if (inString(request, "10-bit")==1) {
+		  res = 10;
+  } else if (inString(request, "11-bit")==1) {
+		  res = 11;
+  } else if (inString(request, "12-bit")==1) {
+		  res = 12;
+  } 
+    return res;
+}
+
 /////////////////////////////////////////////////////////////////
 // Solution Functions
 /////////////////////////////////////////////////////////////////
@@ -76,7 +94,6 @@ int main(void) {
   // Add SPI initialization code
   configureTemp();
 
-
   while(1) {
     /* Wait for ESP8266 to send a request.
     Requests take the form of '/REQ:<tag>\n', with TAG begin <= 10 characters.
@@ -94,13 +111,28 @@ int main(void) {
       request[charIndex++] = readChar(USART);
     }
 
-    // Add SPI code here for reading temperature
-    float tempOutput = getTemp();
-    char tempString[16] = getTemp(); 
-    sprintf(tempString, %s ,tempOutput)
-
     // Update string with current LED state
     int led_status = updateLEDStatus(request);
+
+    // Updating resolution with user request
+    int res_status = updatetempStatus(request);
+    setResolution(res_status);
+
+    float tempOutput;
+    tempOutput = getTemp();
+
+    char resStatusStr[50];
+    if (res_status == 8) {
+      sprintf(resStatusStr, "Temperature: %.0f C", tempOutput);
+    } else if (res_status == 9) {
+      sprintf(resStatusStr, "Temperature: %.1f C", tempOutput);
+    } else if (res_status == 10) {
+      sprintf(resStatusStr, "Temperature: %.2f C", tempOutput);
+    } else if (res_status == 11) {
+      sprintf(resStatusStr, "Temperature: %.3f C", tempOutput);
+    } else if (res_status == 12) {
+      sprintf(resStatusStr, "Temperature: %.4f C", tempOutput);
+    }
 
     char ledStatusStr[20];
     if (led_status == 1)
@@ -108,25 +140,23 @@ int main(void) {
     else if (led_status == 0)
       sprintf(ledStatusStr,"LED is off!");
 
-    // finally, transmit the webpage over UART
+    // Finally, transmit the webpage over UART
     sendString(USART, webpageStart); // webpage header code
+
     sendString(USART, ledStr); // button for controlling LED
-    sendString(USART, tempStr); // button for resolution
-
     sendString(USART, "<h2>LED Status</h2>");
-
     sendString(USART, "<p>");
     sendString(USART, ledStatusStr);
     sendString(USART, "</p>");
 
-    // Adding temperature things
     sendString(USART, "<h2>Temperature Status</h2>");
     sendString(USART, "<p>");
-    sendString(USART, tempString);
+    sendString(USART, resStatusStr);
     sendString(USART, "</p>");
 
     // Adding resolution button
     sendString(USART, "<h2>Temperature Resolution</h2>");
+    sendString(USART, tempStr); // button for controlling temperature resolution
 
     sendString(USART, webpageEnd);
   }

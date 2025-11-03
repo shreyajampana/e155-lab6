@@ -19,6 +19,6 @@ void configureTemp();
 
 void setResolution(int res);
 
-void getTemp();
+float getTemp();
 
 #endif
