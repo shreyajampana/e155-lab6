@@ -2,7 +2,7 @@
 // Shreya Jampana
 // sjampana@hmc.edu
 // 10/18/25
-// TODO: <SHORT DESCRIPTION OF WHAT THIS FILE DOES>
+// Description: SPI header file containing function declarations and GPIO pins for transactions. 
 
 #ifndef STM32L4_SPI_H
 #define STM32L4_SPI_H

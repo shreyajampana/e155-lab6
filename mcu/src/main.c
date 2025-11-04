@@ -1,8 +1,11 @@
 /*
-File: Lab_6_JHB.c
+File: Lab_6.c
 Author: Shreya Jampana
 Email: sjampana@hmc.edu
 Date: 10/18/25
+DescriptionL This is the main.c file containing the UART code for the webpage. It also contains
+the SPI initialization and send/receive function calls, as well as the code for blinking the 
+onboard LED and displaying the temperature on the website. 
 */
 
 int res;
@@ -118,8 +121,8 @@ int main(void) {
     int res_status = updatetempStatus(request);
     setResolution(res_status);
 
-    float tempOutput;
-    tempOutput = getTemp();
+    float tempOutput = getTemp();
+    delay_millis(TIM15, 100);
 
     char resStatusStr[50];
     if (res_status == 8) {

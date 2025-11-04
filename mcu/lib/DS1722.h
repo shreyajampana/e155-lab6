@@ -2,7 +2,7 @@
 // Shreya Jampana
 // sjampana@hmc.edu
 // 10/18/25
-// TODO: <SHORT DESCRIPTION OF WHAT THIS FILE DOES>
+// Description: Temperature sensor header file containing function calls. 
 
 #ifndef DS1722_H
 #define DS1722_H

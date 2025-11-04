@@ -2,7 +2,8 @@
 // Shreya Jampana
 // sjampana@hmc.edu
 // 10/18/25
-// TODO: <SHORT DESCRIPTION OF WHAT THIS FILE DOES>
+// Description: This contains functions to configure the temperature sensor, set
+// the resolution, and get the temperature (to be displayed) using the SPI functions. 
 
 #include <stdio.h>
 #include <stdint.h>

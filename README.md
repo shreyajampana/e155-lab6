@@ -1,0 +1,1 @@
+This repository contains code for my lab 6, where I design and build an IoT device, implement the MCU's SPI functionality, and interface the MCU with a WiFi module over a UART link.  

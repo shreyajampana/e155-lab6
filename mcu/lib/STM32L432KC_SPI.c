@@ -2,7 +2,8 @@
 // Shreya Jampana
 // sjampana@hmc.edu
 // 10/18/25
-// TODO: <SHORT DESCRIPTION OF WHAT THIS FILE DOES>
+// Description: This file contains code to intialize the SPI transaction
+// and transmit and receive characters over SPI. 
 
 #include "C:\Users\sjampana\Downloads\e155-lab6\e155-lab6\mcu\lib\STM32L432KC_SPI.h"
 #include "C:\Users\sjampana\Downloads\e155-lab6\e155-lab6\mcu\lib\STM32L432KC_GPIO.h"
